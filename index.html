@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSchedule AI - Next-Gen Smart Campus Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444'
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'bounce-in': 'bounceIn 0.6s ease-out',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .neo-morphism {
+            background: #ffffff;
+            box-shadow: 20px 20px 60px #d1d1d1, -20px -20px 60px #ffffff;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .holographic {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+            background-size: 400% 400%;
+            animation: holographic 4s ease infinite;
+        }
+        
+        @keyframes holographic {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(99, 102, 241, 0.5); }
+            to { box-shadow: 0 0 30px rgba(99, 102, 241, 0.8), 0 0 40px rgba(99, 102, 241, 0.3); }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes wiggle {
+            0%, 7% { transform: rotateZ(0); }
+            15% { transform: rotateZ(-15deg); }
+            20% { transform: rotateZ(10deg); }
+            25% { transform: rotateZ(-10deg); }
+            30% { transform: rotateZ(6deg); }
+            35% { transform: rotateZ(-4deg); }
+            40%, 100% { transform: rotateZ(0); }
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .ai-brain {
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, rgba(139, 92, 246, 0.6) 50%, rgba(6, 182, 212, 0.4) 100%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .data-stream {
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+            animation: dataFlow 2s linear infinite;
+        }
+        
+        @keyframes dataFlow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .timetable-cell {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timetable-cell:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+        
+        .timetable-cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .timetable-cell:hover::before {
+            left: 100%;
+        }
+        
+        .loading-dots {
+            display: inline-block;
+        }
+        
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        
+        .neural-network {
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.2) 0%, transparent 50%);
+        }
+        
+        .quantum-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .quantum-card:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hologram-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hologram-effect::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            animation: rotate 4s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .voice-wave {
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: currentColor;
+            margin: 0 1px;
+            animation: wave 1s ease-in-out infinite;
+        }
+        
+        .voice-wave:nth-child(2) { animation-delay: 0.1s; }
+        .voice-wave:nth-child(3) { animation-delay: 0.2s; }
+        .voice-wave:nth-child(4) { animation-delay: 0.3s; }
+        .voice-wave:nth-child(5) { animation-delay: 0.4s; }
+        
+        @keyframes wave {
+            0%, 100% { height: 20px; }
+            50% { height: 5px; }
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden">
+    <!-- Animated Background Particles -->
+    <div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+    
+    <!-- Neural Network Background -->
+    <div class="fixed inset-0 neural-network pointer-events-none z-0"></div>
+    
+    <!-- Header -->
+    <header class="relative z-10 glass-morphism border-b border-white/20">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <div class="w-12 h-12 holographic rounded-xl flex items-center justify-center animate-spin-slow">
+                            <span class="text-2xl">🧠</span>
+                        </div>
+                        <div class="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-black gradient-text">EduSchedule AI</h1>
+                        <p class="text-sm text-white/80">Next-Gen Smart Campus Management</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="hidden md:flex items-center space-x-4">
+                        <div class="text-right text-white">
+                            <p class="font-semibold">Dr. Sarah Johnson</p>
+                            <p class="text-sm opacity-80">Chief Academic Officer</p>
+                        </div>
+                        <div class="relative">
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                <span class="text-xl">👩‍💼</span>
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
+                        </div>
+                    </div>
+                    <button class="glass-morphism px-4 py-2 rounded-lg text-white hover:bg-white/20 transition-all duration-300">
+                        <span class="text-lg">⚙️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="relative z-10 container mx-auto px-6 py-8">
+        <!-- AI Status Banner -->
+        <div class="mb-8 quantum-card rounded-2xl p-6 animate-slide-up">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="ai-brain w-16 h-16 rounded-full flex items-center justify-center">
+                        <span class="text-2xl">🤖</span>
+                    </div>
+                    <div class="text-white">
+                        <h3 class="text-xl font-bold">AI System Status</h3>
+                        <p class="text-white/80">Processing 847 scheduling parameters in real-time</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right text-white">
+                        <p class="text-2xl font-bold text-green-400">99.7%</p>
+                        <p class="text-sm">Optimization Rate</p>
+                    </div>
+                    <div class="flex space-x-1">
+                        <div class="voice-wave bg-green-400"></div>
+                        <div class="voice-wave bg-green-400"></div>
+                        <div class="voice-wave bg-green-400"></div>
+                        <div class="voice-wave bg-green-400"></div>
+                        <div class="voice-wave bg-green-400"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="quantum-card rounded-2xl p-6 hologram-effect animate-bounce-in" style="animation-delay: 0.1s">
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center animate-float">
+                            <span class="text-2xl">📊</span>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">+12%</span>
+                    </div>
+                    <h3 class="text-white/80 text-sm font-medium">Active Schedules</h3>
+                    <p class="text-3xl font-black text-white mb-2" id="activeSchedules">24</p>
+                    <div class="w-full bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-2 rounded-full animate-pulse" style="width: 78%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quantum-card rounded-2xl p-6 hologram-effect animate-bounce-in" style="animation-delay: 0.2s">
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center animate-float" style="animation-delay: 0.5s">
+                            <span class="text-2xl">🏢</span>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Real-time</span>
+                    </div>
+                    <h3 class="text-white/80 text-sm font-medium">Room Utilization</h3>
+                    <p class="text-3xl font-black text-white mb-2" id="roomUtilization">89%</p>
+                    <div class="w-full bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full animate-pulse" style="width: 89%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quantum-card rounded-2xl p-6 hologram-effect animate-bounce-in" style="animation-delay: 0.3s">
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center animate-float" style="animation-delay: 1s">
+                            <span class="text-2xl">👨‍🏫</span>
+                        </div>
+                        <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">AI Balanced</span>
+                    </div>
+                    <h3 class="text-white/80 text-sm font-medium">Faculty Workload</h3>
+                    <p class="text-3xl font-black text-white mb-2">Optimal</p>
+                    <div class="w-full bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-purple-400 to-purple-600 h-2 rounded-full animate-pulse" style="width: 95%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quantum-card rounded-2xl p-6 hologram-effect animate-bounce-in" style="animation-delay: 0.4s">
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center animate-float" style="animation-delay: 1.5s">
+                            <span class="text-2xl">⚡</span>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">-23% Energy</span>
+                    </div>
+                    <h3 class="text-white/80 text-sm font-medium">AI Predictions</h3>
+                    <p class="text-3xl font-black text-white mb-2" id="predictions">1,247</p>
+                    <div class="w-full bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-orange-400 to-orange-600 h-2 rounded-full animate-pulse" style="width: 92%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Interface -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <!-- Timetable Creation Panel -->
+            <div class="xl:col-span-2 quantum-card rounded-2xl p-8 animate-slide-up">
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 class="text-3xl font-black text-white mb-2">Neural Timetable Generator</h2>
+                            <p class="text-white/70">Powered by Quantum AI & Machine Learning</p>
+                        </div>
+                        <button id="quantumModeBtn" class="holographic px-6 py-3 rounded-xl text-white font-semibold hover:scale-105 transition-all duration-300 animate-glow">
+                            <span class="text-lg mr-2">⚛️</span>
+                            Quantum Mode
+                        </button>
+                    </div>
+
+                    <!-- Smart Input Section -->
+                    <div class="space-y-6">
+                        <!-- Department & Semester Selection -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="block text-white font-medium">Department</label>
+                                <div class="relative">
+                                    <select id="departmentSelect" class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
+                                        <option value="cs">Computer Science & AI</option>
+                                        <option value="ece">Electronics & Communication</option>
+                                        <option value="me">Mechanical Engineering</option>
+                                        <option value="ce">Civil Engineering</option>
+                                        <option value="ds">Data Science & Analytics</option>
+                                    </select>
+                                    <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60">
+                                        <span class="text-lg">🔽</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-white font-medium">Academic Year</label>
+                                <div class="relative">
+                                    <select id="yearSelect" class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
+                                        <option value="1">First Year (2024-25)</option>
+                                        <option value="2">Second Year (2023-24)</option>
+                                        <option value="3">Third Year (2022-23)</option>
+                                        <option value="4">Fourth Year (2021-22)</option>
+                                    </select>
+                                    <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60">
+                                        <span class="text-lg">🔽</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Parameters -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="space-y-2">
+                                <label class="block text-white font-medium">Student Batches</label>
+                                <input type="number" id="batchCount" value="6" min="1" max="20" class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-white font-medium">Daily Classes</label>
+                                <input type="number" id="dailyClasses" value="8" min="4" max="12" class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-white font-medium">Available Rooms</label>
+                                <input type="number" id="roomCount" value="25" min="5" max="100" class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                        </div>
+
+                        <!-- Subject Management -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xl font-bold text-white">Smart Subject Configuration</h3>
+                                <button id="aiSuggestBtn" class="bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-2 rounded-lg text-white font-medium hover:scale-105 transition-all duration-300">
+                                    <span class="mr-2">🧠</span>AI Suggest
+                                </button>
+                            </div>
+                            <div id="subjectList" class="space-y-3 max-h-64 overflow-y-auto">
+                                <!-- Dynamic subject list will be populated here -->
+                            </div>
+                            <button id="addSubjectBtn" class="w-full py-3 border-2 border-dashed border-white/30 rounded-xl text-white/70 hover:border-white/50 hover:text-white transition-all duration-300 flex items-center justify-center space-x-2">
+                                <span class="text-xl">➕</span>
+                                <span>Add New Subject</span>
+                            </button>
+                        </div>
+
+                        <!-- AI Enhancement Options -->
+                        <div class="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-white/20">
+                            <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                                <span class="mr-2 text-xl">🚀</span>
+                                AI Enhancement Suite
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="flex items-center space-x-3 cursor-pointer group">
+                                    <input type="checkbox" id="predictiveScheduling" checked class="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-lg group-hover:animate-wiggle">🔮</span>
+                                        <span class="text-white group-hover:text-cyan-300 transition-colors">Predictive Scheduling</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer group">
+                                    <input type="checkbox" id="autoProxy" checked class="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-lg group-hover:animate-wiggle">🔄</span>
+                                        <span class="text-white group-hover:text-green-300 transition-colors">Auto Proxy Finder</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer group">
+                                    <input type="checkbox" id="electiveOptimizer" checked class="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-lg group-hover:animate-wiggle">🎯</span>
+                                        <span class="text-white group-hover:text-purple-300 transition-colors">NEP 2020 Elective Optimizer</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer group">
+                                    <input type="checkbox" id="energyOptimization" class="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-lg group-hover:animate-wiggle">🌱</span>
+                                        <span class="text-white group-hover:text-green-300 transition-colors">Green Campus Mode</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer group">
+                                    <input type="checkbox" id="wellnessAnalytics" checked class="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-lg group-hover:animate-wiggle">💚</span>
+                                        <span class="text-white group-hover:text-pink-300 transition-colors">Faculty Wellness Analytics</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer group">
+                                    <input type="checkbox" id="quantumOptimization" class="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-lg group-hover:animate-wiggle">⚛️</span>
+                                        <span class="text-white group-hover:text-cyan-300 transition-colors">Quantum Optimization</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <button id="generateTimetableBtn" class="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all duration-300 animate-glow flex items-center justify-center space-x-3">
+                            <span class="text-2xl">🚀</span>
+                            <span id="generateBtnText">Generate AI-Powered Timetables</span>
+                            <span class="text-2xl">✨</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Panel -->
+            <div class="space-y-6">
+                <!-- Live Campus Digital Twin -->
+                <div class="quantum-card rounded-2xl p-6 animate-slide-up">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-white flex items-center">
+                                <span class="mr-2 text-xl animate-spin-slow">🌐</span>
+                                Live Campus Twin
+                            </h3>
+                            <span class="bg-green-400 text-green-900 px-2 py-1 rounded-full text-xs font-bold animate-pulse">LIVE</span>
+                        </div>
+                        <div id="campusMap" class="space-y-3">
+                            <!-- Dynamic campus map will be populated here -->
+                        </div>
+                        <button id="fullCampusMapBtn" class="w-full mt-4 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2">
+                            <span class="text-lg">🗺️</span>
+                            <span>Full Campus View</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Assistant -->
+                <div class="quantum-card rounded-2xl p-6 animate-slide-up">
+                    <div class="relative z-10">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                            <span class="mr-2 text-xl animate-bounce">🤖</span>
+                            Neural Assistant
+                        </h3>
+                        <div id="aiChat" class="space-y-3 max-h-48 overflow-y-auto mb-4">
+                            <!-- AI chat messages will appear here -->
+                        </div>
+                        <div class="flex space-x-2">
+                            <input type="text" id="aiInput" placeholder="Ask me anything..." class="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <button id="sendAiMessage" class="bg-primary hover:bg-secondary px-4 py-2 rounded-lg text-white transition-colors">
+                                <span class="text-lg">📤</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Voice Assistant -->
+                <div class="quantum-card rounded-2xl p-6 animate-slide-up holographic">
+                    <div class="relative z-10">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                            <span class="mr-2 text-xl">🎤</span>
+                            Voice Command Center
+                        </h3>
+                        <p class="text-white/80 text-sm mb-4">Say "Hey EduSchedule" to activate</p>
+                        <button id="voiceActivateBtn" class="w-full bg-white/20 hover:bg-white/30 text-white py-3 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2">
+                            <div id="voiceIndicator" class="flex space-x-1">
+                                <div class="voice-wave bg-white"></div>
+                                <div class="voice-wave bg-white"></div>
+                                <div class="voice-wave bg-white"></div>
+                                <div class="voice-wave bg-white"></div>
+                                <div class="voice-wave bg-white"></div>
+                            </div>
+                            <span id="voiceStatus">Start Voice Command</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quantum-card rounded-2xl p-6 animate-slide-up">
+                    <div class="relative z-10">
+                        <h3 class="text-lg font-bold text-white mb-4">Quick Actions</h3>
+                        <div class="space-y-2">
+                            <button class="w-full text-left p-3 rounded-lg hover:bg-white/10 transition-all duration-300 text-white flex items-center space-x-3 group">
+                                <span class="text-lg group-hover:animate-bounce">📊</span>
+                                <span>Analytics Dashboard</span>
+                            </button>
+                            <button class="w-full text-left p-3 rounded-lg hover:bg-white/10 transition-all duration-300 text-white flex items-center space-x-3 group">
+                                <span class="text-lg group-hover:animate-bounce">🔍</span>
+                                <span>Search Schedules</span>
+                            </button>
+                            <button class="w-full text-left p-3 rounded-lg hover:bg-white/10 transition-all duration-300 text-white flex items-center space-x-3 group">
+                                <span class="text-lg group-hover:animate-bounce">⚙️</span>
+                                <span>System Settings</span>
+                            </button>
+                            <button id="exportDataBtn" class="w-full text-left p-3 rounded-lg hover:bg-white/10 transition-all duration-300 text-white flex items-center space-x-3 group">
+                                <span class="text-lg group-hover:animate-bounce">📤</span>
+                                <span>Export Data</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Results Modal -->
+    <div id="resultsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="quantum-card rounded-2xl max-w-7xl w-full max-h-[95vh] overflow-y-auto animate-bounce-in">
+            <div class="relative z-10 p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-2">AI-Generated Timetable Options</h3>
+                        <p class="text-white/70">Quantum-optimized schedules with 99.7% efficiency</p>
+                    </div>
+                    <button id="closeResultsModal" class="text-white/60 hover:text-white text-2xl">✕</button>
+                </div>
+
+                <!-- Timetable Options -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-gradient-to-br from-green-500/20 to-emerald-500/20 border-2 border-green-400/50 rounded-xl p-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-green-400 text-green-900 px-3 py-1 rounded-bl-lg text-sm font-bold">RECOMMENDED</div>
+                        <h4 class="text-xl font-bold text-white mb-4">🏆 Optimal Balance</h4>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between text-white">
+                                <span>Room Utilization:</span>
+                                <span class="font-bold text-green-400">94%</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>Faculty Balance:</span>
+                                <span class="font-bold text-green-400">Excellent</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>Student Satisfaction:</span>
+                                <span class="font-bold text-green-400">96%</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>Energy Efficiency:</span>
+                                <span class="font-bold text-green-400">High</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>AI Confidence:</span>
+                                <span class="font-bold text-green-400">99.7%</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-4 bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-bold transition-all duration-300 hover:scale-105">
+                            Select This Schedule
+                        </button>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-2 border-blue-400/50 rounded-xl p-6">
+                        <h4 class="text-xl font-bold text-white mb-4">⚡ Maximum Efficiency</h4>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between text-white">
+                                <span>Room Utilization:</span>
+                                <span class="font-bold text-blue-400">98%</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>Faculty Balance:</span>
+                                <span class="font-bold text-yellow-400">Good</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>Student Satisfaction:</span>
+                                <span class="font-bold text-blue-400">89%</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>Energy Efficiency:</span>
+                                <span class="font-bold text-blue-400">Medium</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>AI Confidence:</span>
+                                <span class="font-bold text-blue-400">94.2%</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-bold transition-all duration-300 hover:scale-105">
+                            Select This Schedule
+                        </button>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border-2 border-purple-400/50 rounded-xl p-6">
+                        <h4 class="text-xl font-bold text-white mb-4">🌱 Green Campus</h4>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between text-white">
+                                <span>Room Utilization:</span>
+                                <span class="font-bold text-purple-400">87%</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>Faculty Balance:</span>
+                                <span class="font-bold text-green-400">Excellent</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>Student Satisfaction:</span>
+                                <span class="font-bold text-purple-400">91%</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>Energy Efficiency:</span>
+                                <span class="font-bold text-green-400">Very High</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>AI Confidence:</span>
+                                <span class="font-bold text-purple-400">97.1%</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-4 bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-lg font-bold transition-all duration-300 hover:scale-105">
+                            Select This Schedule
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sample Timetable Preview -->
+                <div class="bg-white/5 rounded-xl p-6 mb-6">
+                    <h4 class="text-xl font-bold text-white mb-4">📅 Preview: Computer Science & AI - Third Year</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="border-b border-white/20">
+                                    <th class="text-left p-3 text-white font-semibold">Time</th>
+                                    <th class="text-left p-3 text-white font-semibold">Monday</th>
+                                    <th class="text-left p-3 text-white font-semibold">Tuesday</th>
+                                    <th class="text-left p-3 text-white font-semibold">Wednesday</th>
+                                    <th class="text-left p-3 text-white font-semibold">Thursday</th>
+                                    <th class="text-left p-3 text-white font-semibold">Friday</th>
+                                </tr>
+                            </thead>
+                            <tbody id="timetablePreview">
+                                <!-- Dynamic timetable content will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-4">
+                    <button class="flex-1 min-w-48 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 px-6 rounded-lg font-bold hover:scale-105 transition-all duration-300">
+                        🚀 Deploy Schedule
+                    </button>
+                    <button class="flex-1 min-w-48 bg-gradient-to-r from-blue-500 to-cyan-500 text-white py-3 px-6 rounded-lg font-bold hover:scale-105 transition-all duration-300">
+                        🔧 Customize Further
+                    </button>
+                    <button class="flex-1 min-w-48 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-lg font-bold hover:scale-105 transition-all duration-300">
+                        📊 Detailed Analytics
+                    </button>
+                    <button class="flex-1 min-w-48 bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-6 rounded-lg font-bold hover:scale-105 transition-all duration-300">
+                        📤 Export & Share
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Campus Map Modal -->
+    <div id="fullCampusModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="quantum-card rounded-2xl max-w-6xl w-full max-h-[95vh] overflow-y-auto animate-bounce-in">
+            <div class="relative z-10 p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-white">🌐 Live Campus Digital Twin</h3>
+                    <button id="closeFullCampusModal" class="text-white/60 hover:text-white text-2xl">✕</button>
+                </div>
+                <div id="fullCampusContent">
+                    <!-- Full campus map content will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Backend Simulation Class
+        class EduScheduleBackend {
+            constructor() {
+                this.subjects = {
+                    cs: [
+                        { name: 'Artificial Intelligence', hours: 4, faculty: 'Dr. Sarah Chen', type: 'theory' },
+                        { name: 'Machine Learning', hours: 3, faculty: 'Prof. Michael Rodriguez', type: 'theory' },
+                        { name: 'Data Structures & Algorithms', hours: 4, faculty: 'Dr. Emily Johnson', type: 'theory' },
+                        { name: 'Database Management Systems', hours: 3, faculty: 'Prof. David Kim', type: 'theory' },
+                        { name: 'AI Lab', hours: 2, faculty: 'Dr. Sarah Chen', type: 'lab' },
+                        { name: 'ML Lab', hours: 2, faculty: 'Prof. Michael Rodriguez', type: 'lab' }
+                    ],
+                    ece: [
+                        { name: 'Digital Signal Processing', hours: 4, faculty: 'Dr. Priya Sharma', type: 'theory' },
+                        { name: 'VLSI Design', hours: 3, faculty: 'Prof. James Wilson', type: 'theory' },
+                        { name: 'Communication Systems', hours: 4, faculty: 'Dr. Lisa Anderson', type: 'theory' },
+                        { name: 'Microprocessors', hours: 3, faculty: 'Prof. Robert Taylor', type: 'theory' },
+                        { name: 'DSP Lab', hours: 2, faculty: 'Dr. Priya Sharma', type: 'lab' }
+                    ]
+                };
+                
+                this.campusData = {
+                    buildings: [
+                        { name: 'Academic Block A', rooms: 15, occupied: 12, capacity: 50 },
+                        { name: 'Academic Block B', rooms: 12, occupied: 8, capacity: 45 },
+                        { name: 'Lab Complex', rooms: 8, occupied: 6, capacity: 30 },
+                        { name: 'Auditorium Complex', rooms: 5, occupied: 2, capacity: 200 }
+                    ]
+                };
+                
+                this.aiResponses = [
+                    "Based on student attention patterns, I recommend scheduling AI classes between 9-11 AM for optimal learning.",
+                    "I've detected a potential conflict in Room A-101. Should I suggest an alternative?",
+                    "Faculty workload analysis shows Prof. Rodriguez is available for 2 additional hours this week.",
+                    "Energy optimization suggests consolidating morning classes in Block A to reduce consumption by 15%.",
+                    "Predictive analysis indicates 87% chance of rain tomorrow. Indoor venues recommended."
+                ];
+                
+                this.timetableData = [
+                    { time: '9:00-10:00', subjects: ['Artificial Intelligence', 'Digital Circuits', 'Thermodynamics', 'Structural Analysis', 'Data Analytics'] },
+                    { time: '10:00-11:00', subjects: ['Machine Learning', 'Signal Processing', 'Fluid Mechanics', 'Concrete Technology', 'Statistics'] },
+                    { time: '11:00-12:00', subjects: ['Data Structures', 'VLSI Design', 'Heat Transfer', 'Surveying', 'Python Programming'] },
+                    { time: '12:00-1:00', subjects: ['Database Systems', 'Communication', 'Manufacturing', 'Transportation', 'R Programming'] },
+                    { time: '2:00-3:00', subjects: ['AI Lab', 'ECE Lab', 'Mechanical Lab', 'Civil Lab', 'Data Science Lab'] },
+                    { time: '3:00-4:00', subjects: ['ML Lab', 'DSP Lab', 'Workshop', 'CAD Lab', 'Analytics Lab'] }
+                ];
+            }
+            
+            getSubjects(department) {
+                return this.subjects[department] || [];
+            }
+            
+            generateTimetable(params) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const options = [
+                            {
+                                name: 'Optimal Balance',
+                                utilization: 94,
+                                balance: 'Excellent',
+                                satisfaction: 96,
+                                energy: 'High',
+                                confidence: 99.7
+                            },
+                            {
+                                name: 'Maximum Efficiency',
+                                utilization: 98,
+                                balance: 'Good',
+                                satisfaction: 89,
+                                energy: 'Medium',
+                                confidence: 94.2
+                            },
+                            {
+                                name: 'Green Campus',
+                                utilization: 87,
+                                balance: 'Excellent',
+                                satisfaction: 91,
+                                energy: 'Very High',
+                                confidence: 97.1
+                            }
+                        ];
+                        resolve(options);
+                    }, 3000);
+                });
+            }
+            
+            getCampusStatus() {
+                return this.campusData;
+            }
+            
+            getAIResponse() {
+                return this.aiResponses[Math.floor(Math.random() * this.aiResponses.length)];
+            }
+            
+            getTimetablePreview() {
+                return this.timetableData;
+            }
+        }
+        
+        // Initialize Backend
+        const backend = new EduScheduleBackend();
+        
+        // UI Controller Class
+        class UIController {
+            constructor() {
+                this.initializeEventListeners();
+                this.initializeAnimations();
+                this.populateSubjects();
+                this.updateCampusMap();
+                this.startRealTimeUpdates();
+                this.initializeAIChat();
+            }
+            
+            initializeEventListeners() {
+                // Generate Timetable
+                document.getElementById('generateTimetableBtn').addEventListener('click', () => {
+                    this.generateTimetable();
+                });
+                
+                // Department Change
+                document.getElementById('departmentSelect').addEventListener('change', (e) => {
+                    this.populateSubjects(e.target.value);
+                });
+                
+                // AI Suggest
+                document.getElementById('aiSuggestBtn').addEventListener('click', () => {
+                    this.showAISuggestions();
+                });
+                
+                // Add Subject
+                document.getElementById('addSubjectBtn').addEventListener('click', () => {
+                    this.addNewSubject();
+                });
+                
+                // Voice Activation
+                document.getElementById('voiceActivateBtn').addEventListener('click', () => {
+                    this.activateVoice();
+                });
+                
+                // Campus Map
+                document.getElementById('fullCampusMapBtn').addEventListener('click', () => {
+                    this.showFullCampusMap();
+                });
+                
+                // AI Chat
+                document.getElementById('sendAiMessage').addEventListener('click', () => {
+                    this.sendAIMessage();
+                });
+                
+                document.getElementById('aiInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.sendAIMessage();
+                    }
+                });
+                
+                // Modal Close Events
+                document.getElementById('closeResultsModal').addEventListener('click', () => {
+                    document.getElementById('resultsModal').classList.add('hidden');
+                });
+                
+                document.getElementById('closeFullCampusModal').addEventListener('click', () => {
+                    document.getElementById('fullCampusModal').classList.add('hidden');
+                });
+                
+                // Quantum Mode
+                document.getElementById('quantumModeBtn').addEventListener('click', () => {
+                    this.toggleQuantumMode();
+                });
+            }
+            
+            initializeAnimations() {
+                // Create floating particles
+                this.createParticles();
+                
+                // Animate metrics
+                this.animateMetrics();
+            }
+            
+            createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                for (let i = 0; i < 50; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 3 + 's';
+                    particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    particlesContainer.appendChild(particle);
+                }
+            }
+            
+            animateMetrics() {
+                const metrics = [
+                    { id: 'activeSchedules', target: 24, current: 0 },
+                    { id: 'roomUtilization', target: 89, current: 0, suffix: '%' },
+                    { id: 'predictions', target: 1247, current: 0 }
+                ];
+                
+                metrics.forEach(metric => {
+                    const element = document.getElementById(metric.id);
+                    if (element) {
+                        const increment = metric.target / 50;
+                        const timer = setInterval(() => {
+                            metric.current += increment;
+                            if (metric.current >= metric.target) {
+                                metric.current = metric.target;
+                                clearInterval(timer);
+                            }
+                            element.textContent = Math.floor(metric.current) + (metric.suffix || '');
+                        }, 50);
+                    }
+                });
+            }
+            
+            populateSubjects(department = 'cs') {
+                const subjects = backend.getSubjects(department);
+                const subjectList = document.getElementById('subjectList');
+                
+                subjectList.innerHTML = subjects.map(subject => `
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-all duration-300">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-white">${subject.name}</h4>
+                                <p class="text-sm text-white/70">${subject.hours} hrs/week • ${subject.faculty}</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-1 bg-${subject.type === 'lab' ? 'orange' : 'blue'}-500/30 text-${subject.type === 'lab' ? 'orange' : 'blue'}-300 rounded text-xs">${subject.type}</span>
+                                <button class="text-red-400 hover:text-red-300 transition-colors">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            updateCampusMap() {
+                const campusData = backend.getCampusStatus();
+                const campusMap = document.getElementById('campusMap');
+                
+                campusMap.innerHTML = campusData.buildings.map(building => {
+                    const occupancyRate = (building.occupied / building.rooms) * 100;
+                    const statusColor = occupancyRate > 80 ? 'red' : occupancyRate > 60 ? 'yellow' : 'green';
+                    
+                    return `
+                        <div class="bg-${statusColor}-500/20 border border-${statusColor}-400/50 rounded-lg p-3 hover:bg-${statusColor}-500/30 transition-all duration-300">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-semibold text-white text-sm">${building.name}</h4>
+                                <span class="text-xs bg-${statusColor}-400 text-${statusColor}-900 px-2 py-1 rounded-full">${Math.round(occupancyRate)}%</span>
+                            </div>
+                            <p class="text-xs text-white/70">${building.occupied}/${building.rooms} rooms occupied</p>
+                            <div class="mt-2 flex space-x-1">
+                                ${Array.from({length: Math.min(building.rooms, 8)}, (_, i) => 
+                                    `<div class="w-2 h-2 rounded-full bg-${i < building.occupied ? statusColor + '-400' : 'gray-600'}"></div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            startRealTimeUpdates() {
+                setInterval(() => {
+                    this.updateCampusMap();
+                    
+                    // Update metrics with slight variations
+                    const utilizationElement = document.getElementById('roomUtilization');
+                    if (utilizationElement) {
+                        const currentValue = parseInt(utilizationElement.textContent);
+                        const newValue = Math.max(75, Math.min(95, currentValue + Math.floor(Math.random() * 6) - 3));
+                        utilizationElement.textContent = newValue + '%';
+                    }
+                }, 5000);
+            }
+            
+            initializeAIChat() {
+                const aiChat = document.getElementById('aiChat');
+                aiChat.innerHTML = `
+                    <div class="bg-blue-500/20 rounded-lg p-3 border-l-4 border-blue-400">
+                        <p class="text-sm text-white">🤖 Neural Assistant initialized. How can I help optimize your scheduling today?</p>
+                    </div>
+                `;
+            }
+            
+            async generateTimetable() {
+                const btn = document.getElementById('generateTimetableBtn');
+                const btnText = document.getElementById('generateBtnText');
+                
+                // Show loading state
+                btn.disabled = true;
+                btn.classList.add('animate-pulse');
+                btnText.innerHTML = '<span class="loading-dots">Quantum AI Processing</span>';
+                
+                try {
+                    const params = {
+                        department: document.getElementById('departmentSelect').value,
+                        year: document.getElementById('yearSelect').value,
+                        batches: document.getElementById('batchCount').value,
+                        dailyClasses: document.getElementById('dailyClasses').value,
+                        rooms: document.getElementById('roomCount').value
+                    };
+                    
+                    const results = await backend.generateTimetable(params);
+                    
+                    // Show results
+                    this.showTimetableResults(results);
+                    
+                } catch (error) {
+                    console.error('Error generating timetable:', error);
+                } finally {
+                    // Reset button
+                    btn.disabled = false;
+                    btn.classList.remove('animate-pulse');
+                    btnText.textContent = 'Generate AI-Powered Timetables';
+                }
+            }
+            
+            showTimetableResults(results) {
+                // Populate timetable preview
+                const timetablePreview = document.getElementById('timetablePreview');
+                const previewData = backend.getTimetablePreview();
+                
+                timetablePreview.innerHTML = previewData.map(row => `
+                    <tr class="border-b border-white/10 hover:bg-white/5 transition-colors">
+                        <td class="p-3 font-semibold text-white">${row.time}</td>
+                        ${row.subjects.map((subject, index) => `
+                            <td class="p-3">
+                                <div class="timetable-cell bg-gradient-to-br from-${['blue', 'green', 'purple', 'orange', 'pink'][index]}-500/30 to-${['blue', 'green', 'purple', 'orange', 'pink'][index]}-600/30 rounded-lg p-2 border border-${['blue', 'green', 'purple', 'orange', 'pink'][index]}-400/50">
+                                    <p class="font-medium text-white text-sm">${subject}</p>
+                                    <p class="text-xs text-white/70">Room ${101 + index}</p>
+                                </div>
+                            </td>
+                        `).join('')}
+                    </tr>
+                `).join('');
+                
+                // Show modal
+                document.getElementById('resultsModal').classList.remove('hidden');
+                document.getElementById('resultsModal').classList.add('flex');
+            }
+            
+            showAISuggestions() {
+                const response = backend.getAIResponse();
+                this.addAIChatMessage(response, 'ai');
+            }
+            
+            addNewSubject() {
+                const subjectName = prompt('Enter subject name:');
+                const facultyName = prompt('Enter faculty name:');
+                const hours = prompt('Enter hours per week:');
+                
+                if (subjectName && facultyName && hours) {
+                    // Add to current subject list (simulation)
+                    this.addAIChatMessage(`✅ Added "${subjectName}" with ${hours} hours/week assigned to ${facultyName}`, 'system');
+                }
+            }
+            
+            activateVoice() {
+                const btn = document.getElementById('voiceActivateBtn');
+                const status = document.getElementById('voiceStatus');
+                const indicator = document.getElementById('voiceIndicator');
+                
+                status.textContent = 'Listening...';
+                indicator.classList.add('animate-pulse');
+                
+                setTimeout(() => {
+                    status.textContent = 'Processing...';
+                    setTimeout(() => {
+                        status.textContent = 'Start Voice Command';
+                        indicator.classList.remove('animate-pulse');
+                        this.addAIChatMessage('🎤 Voice command processed: "Show available rooms in Block A"', 'system');
+                    }, 2000);
+                }, 3000);
+            }
+            
+            showFullCampusMap() {
+                const modal = document.getElementById('fullCampusModal');
+                const content = document.getElementById('fullCampusContent');
+                
+                content.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                        ${backend.getCampusStatus().buildings.map(building => {
+                            const occupancyRate = (building.occupied / building.rooms) * 100;
+                            const statusColor = occupancyRate > 80 ? 'red' : occupancyRate > 60 ? 'yellow' : 'green';
+                            
+                            return `
+                                <div class="bg-${statusColor}-500/20 border-2 border-${statusColor}-400/50 rounded-xl p-6 hover:scale-105 transition-all duration-300">
+                                    <h4 class="font-bold text-white text-lg mb-4">${building.name}</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between text-white">
+                                            <span>Occupancy:</span>
+                                            <span class="font-bold">${Math.round(occupancyRate)}%</span>
+                                        </div>
+                                        <div class="flex justify-between text-white">
+                                            <span>Rooms:</span>
+                                            <span class="font-bold">${building.occupied}/${building.rooms}</span>
+                                        </div>
+                                        <div class="flex justify-between text-white">
+                                            <span>Capacity:</span>
+                                            <span class="font-bold">${building.capacity}</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 grid grid-cols-4 gap-1">
+                                        ${Array.from({length: building.rooms}, (_, i) => 
+                                            `<div class="w-4 h-4 rounded bg-${i < building.occupied ? statusColor + '-400' : 'gray-600'} hover:scale-110 transition-transform cursor-pointer" title="Room ${i + 1}"></div>`
+                                        ).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div class="text-center text-white/70">
+                        <p>🔄 Real-time updates via IoT sensors • Last updated: ${new Date().toLocaleTimeString()}</p>
+                    </div>
+                `;
+                
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+            
+            sendAIMessage() {
+                const input = document.getElementById('aiInput');
+                const message = input.value.trim();
+                
+                if (message) {
+                    this.addAIChatMessage(message, 'user');
+                    input.value = '';
+                    
+                    // Simulate AI response
+                    setTimeout(() => {
+                        const response = backend.getAIResponse();
+                        this.addAIChatMessage(response, 'ai');
+                    }, 1000);
+                }
+            }
+            
+            addAIChatMessage(message, type) {
+                const aiChat = document.getElementById('aiChat');
+                const messageDiv = document.createElement('div');
+                
+                const colors = {
+                    user: 'bg-blue-500/20 border-l-4 border-blue-400',
+                    ai: 'bg-green-500/20 border-l-4 border-green-400',
+                    system: 'bg-purple-500/20 border-l-4 border-purple-400'
+                };
+                
+                const icons = {
+                    user: '👤',
+                    ai: '🤖',
+                    system: '⚙️'
+                };
+                
+                messageDiv.className = `${colors[type]} rounded-lg p-3 animate-slide-up`;
+                messageDiv.innerHTML = `<p class="text-sm text-white">${icons[type]} ${message}</p>`;
+                
+                aiChat.appendChild(messageDiv);
+                aiChat.scrollTop = aiChat.scrollHeight;
+            }
+            
+            toggleQuantumMode() {
+                const btn = document.getElementById('quantumModeBtn');
+                const isActive = btn.classList.contains('quantum-active');
+                
+                if (isActive) {
+                    btn.classList.remove('quantum-active');
+                    btn.innerHTML = '<span class="text-lg mr-2">⚛️</span>Quantum Mode';
+                    this.addAIChatMessage('Quantum optimization disabled. Switching to standard AI processing.', 'system');
+                } else {
+                    btn.classList.add('quantum-active');
+                    btn.innerHTML = '<span class="text-lg mr-2 animate-spin">⚛️</span>Quantum Active';
+                    this.addAIChatMessage('🚀 Quantum optimization enabled! Processing power increased by 847%.', 'system');
+                }
+            }
+        }
+        
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', () => {
+            new UIController();
+        });
+        
+        // Close modals when clicking outside
+        document.addEventListener('click', (e) => {
+            const modals = ['resultsModal', 'fullCampusModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97c2ccbd54228b82',t:'MTc1NzM4MDE2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
